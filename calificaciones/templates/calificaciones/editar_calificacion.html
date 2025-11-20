@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Editar Calificación - GestAcad{% endblock %}
+{% block content %}
+<div class="content-box">
+    <h1 class="welcome mb-4">Editar Calificación</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-warning">Actualizar</button>
+        <a href="{% url 'calificaciones:listar_calificaciones' %}" class="btn btn-light ms-2">Volver a la lista</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - GestAcad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background: white;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 2px 7px rgba(0,0,0,0.1);
+            width: 320px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 1.5em;
+            color: #2979ff;
+        }
+        form label {
+            font-weight: bold;
+            text-align: left;
+            display: block;
+            margin-top: 1em;
+        }
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"],
+        form select {
+            width: 100%;
+            padding: 0.7em;
+            margin-top: 0.3em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        form button {
+            width: 100%;
+            padding: 0.7em;
+            background-color: #2979ff;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1.5em;
+        }
+        form button:hover {
+            background-color: #0039cb;
+        }
+        .opcion {
+            margin-top: 1em;
+        }
+        .opcion a {
+            text-decoration: none;
+            color: #2979ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Crear una cuenta</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.username.label_tag }}
+            {{ form.username }}
+
+            {{ form.email.label_tag }}
+            {{ form.email }}
+
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+
+            {{ form.rol.label_tag }}
+            {{ form.rol }}
+
+            <button type="submit">Registrarse</button>
+        </form>
+        <div class="opcion">
+            ¿Ya tienes cuenta? <a href="{% url 'usuarios:login' %}">Inicia sesión aquí</a>
+        </div>
+    </div>
+</body>
+</html>

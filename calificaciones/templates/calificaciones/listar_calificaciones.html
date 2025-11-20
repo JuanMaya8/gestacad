@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Lista de Calificaciones - GestAcad{% endblock %}
+{% block content %}
+<div class="content-box">
+    <h1 class="welcome mb-4">Lista de Calificaciones</h1>
+    <a href="{% url 'calificaciones:crear_calificacion' %}" class="btn btn-primary mb-3">
+        <i class="bi bi-plus-circle"></i> Nueva Calificación
+    </a>
+
+    {% if user.groups.all.0.name == 'Profesor' %}
+    <a href="{% url 'calificaciones:exportar_calificaciones' %}" class="btn btn-outline-success mb-3 ms-2">
+        <i class="bi bi-file-earmark-excel"></i> Exportar CSV
+    </a>
+    {% endif %}
+
+    {% if user.groups.all.0.name == 'Profesor' %}
+    <form method="get" class="row row-cols-lg-auto align-items-center mb-4 g-2">
+        <div class="col">
+            <select name="curso" class="form-select" onchange="this.form.submit()">
+                <option value="">-- Curso --</option>
+                {% for curso in cursos %}
+                <option value="{{ curso.id }}" {% if filtro.curso == curso.id|stringformat:"s" %}selected{% endif %}>{{ curso.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col">
+            <select name="materia" class="form-select" onchange="this.form.submit()">
+                <option value="">-- Materia --</option>
+                {% for materia in materias %}
+                <option value="{{ materia.id }}" {% if filtro.materia == materia.id|stringformat:"s" %}selected{% endif %}>{{ materia.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col">
+            <select name="estudiante" class="form-select" onchange="this.form.submit()">
+                <option value="">-- Estudiante --</option>
+                {% for est in estudiantes %}
+                <option value="{{ est.id }}" {% if filtro.estudiante == est.id|stringformat:"s" %}selected{% endif %}>{{ est.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col">
+            <a href="{% url 'calificaciones:listar_calificaciones' %}" class="btn btn-secondary">Limpiar</a>
+        </div>
+    </form>
+    {% endif %}
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Estudiante</th>
+                <th>Materia</th>
+                <th>Curso</th>
+                <th>Nota</th>
+                <th>-</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for calificacion in calificaciones %}
+            <tr>
+                <td>{{ calificacion.estudiante.username }}</td>
+                <td>{{ calificacion.materia.nombre }}</td>
+                <td>{{ calificacion.materia.curso.nombre }}</td>
+                <td><span class="fw-bold">{{ calificacion.nota }}</span></td>
+                <td>
+                    <a href="{% url 'calificaciones:editar_calificacion' calificacion.id %}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{% url 'calificaciones:eliminar_calificacion' calificacion.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted">No hay calificaciones registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if user.groups.all.0.name == 'Estudiante' %}
+        <div class="mt-4">
+            <h2 class="mb-3">Promedio por Curso</h2>
+            <ul>
+                {% for curso, promedio in promedios.items %}
+                    <li><strong>{{ curso }}:</strong> {{ promedio }}</li>
+                {% empty %}
+                    <li>No hay promedios disponibles</li>
+                {% endfor %}
+            </ul>
+            {% if promedios_json and promedios_json != '{}' %}
+                <canvas id="promedioChart" width="400" height="210"></canvas>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                console.log('Iniciando script de gráfica...');
+                
+                // Datos pasados directamente desde Django
+                const promedios_data = JSON.parse('{{ promedios_json|escapejs }}');
+                console.log('Datos recibidos:', promedios_data);
+                
+                const labels = promedios_data.labels || [];
+                const dataArr = (promedios_data.data || []).map(x => Number(x));
+
+                console.log('Labels finales:', labels);
+                console.log('Data final:', dataArr);
+
+                if (labels.length > 0 && dataArr.length > 0) {
+                    console.log('Creando gráfica...');
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Promedio por Curso',
+                            data: dataArr,
+                            backgroundColor: 'rgba(34, 142, 237, 0.6)',
+                            borderColor: 'rgba(34, 142, 237, 1)',
+                            borderWidth: 2
+                        }]
+                    };
+                    const config = {
+                        type: 'bar',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            scales: { 
+                                y: { beginAtZero: true, max: 10 } 
+                            },
+                            plugins: { 
+                                legend: { display: false } 
+                            }
+                        }
+                    };
+                    new Chart(document.getElementById('promedioChart'), config);
+                    console.log('Gráfica creada exitosamente');
+                } else {
+                    console.warn('No hay datos válidos:', {labels: labels.length, data: dataArr.length});
+                }
+                </script>
+            {% else %}
+                <div class="alert alert-info">No hay datos para graficar.</div>
+            {% endif %}
+        </div>
+    {% elif promedios %}
+        <div class="mt-4">
+            <h2 class="mb-3">Promedio por Estudiante y Curso</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Estudiante</th>
+                        <th>Curso</th>
+                        <th>Promedio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for estudiante, cursos in promedios.items %}
+                        {% for curso, promedio in cursos.items %}
+                            <tr>
+                                <td>{{ estudiante }}</td>
+                                <td>{{ curso }}</td>
+                                <td>{{ promedio }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

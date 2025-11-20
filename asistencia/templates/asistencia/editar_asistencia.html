@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Editar Asistencia - GestAcad{% endblock %}
+{% block content %}
+<div class="content-box">
+    <h1 class="welcome mb-4">Editar Asistencia</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-warning">Actualizar</button>
+        <a href="{% url 'asistencia:listar_asistencia' %}" class="btn btn-light ms-2">Volver a la lista</a>
+    </form>
+</div>
+{% endblock %}

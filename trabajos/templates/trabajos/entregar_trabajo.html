@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Entregar Trabajo{% endblock %}
+{% block content %}
+<div class="content-box">
+  <h1 class="mb-4">Entregar Trabajo: <strong>{{ trabajo.titulo }}</strong></h1>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-success" type="submit">
+      <i class="bi bi-upload"></i> Subir Entrega
+    </button>
+    <a href="{% url 'trabajos:listar_trabajos' %}" class="btn btn-secondary ms-2">Volver</a>
+  </form>
+</div>
+{% endblock %}

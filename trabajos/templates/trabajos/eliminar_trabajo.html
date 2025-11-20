@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Eliminar Trabajo{% endblock %}
+{% block content %}
+<div class="content-box text-center">
+  <h1 class="mb-4"><i class="bi bi-trash"></i> Eliminar Trabajo</h1>
+  <p>¿Estás seguro que deseas eliminar el trabajo <b>{{ trabajo.titulo }}</b>?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Eliminar</button>
+    <a href="{% url 'trabajos:listar_trabajos' %}" class="btn btn-secondary ms-2">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

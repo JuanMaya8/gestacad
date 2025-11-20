@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Revisar Entregas{% endblock %}
+{% block content %}
+<div class="content-box">
+  <h1 class="mb-4">Entregas del Trabajo: <strong>{{ trabajo.titulo }}</strong></h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Estudiante</th>
+        <th>Archivo</th>
+        <th>Fecha Entrega</th>
+        <th>Calificación</th>
+        <th>-</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entrega in entregas %}
+      <tr>
+        <td>{{ entrega.estudiante.username }}</td>
+        <td>
+          <a href="{{ entrega.archivo.url }}" target="_blank" class="btn btn-info btn-sm">
+            <i class="bi bi-file-earmark-arrow-down"></i> Descargar
+          </a>
+        </td>
+        <td>{{ entrega.fecha_entrega }}</td>
+        <td>
+          {% if entrega.calificacion %}
+            <span class="fw-bold">{{ entrega.calificacion }}</span>
+          {% else %}
+            <span class="text-muted">Sin calificar</span>
+          {% endif %}
+        </td>
+        <td>
+          <a href="{% url 'trabajos:calificar_entrega' entrega.id %}" class="btn btn-primary btn-sm">
+            <i class="bi bi-award"></i> Calificar
+          </a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center text-muted">No hay entregas para este trabajo.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'trabajos:listar_trabajos' %}" class="btn btn-secondary">Volver</a>
+</div>
+{% endblock %}

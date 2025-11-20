@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Lista de Asistencias - GestAcad{% endblock %}
+{% block content %}
+<div class="content-box">
+    <h1 class="welcome mb-4">Lista de Asistencias</h1>
+    <a href="{% url 'asistencia:crear_asistencia' %}" class="btn btn-primary mb-3">
+        <i class="bi bi-plus-circle"></i> Nueva Asistencia
+    </a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Curso</th>
+                <th>Estudiante</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>-</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for asistencia in asistencias %}
+            <tr>
+                <td>{{ asistencia.curso.nombre }}</td>
+                <td>{{ asistencia.estudiante.username }}</td>
+                <td>{{ asistencia.fecha }}</td>
+                <td>
+                    {% if asistencia.presente %}
+                        <span class="badge bg-success">Presente</span>
+                    {% else %}
+                        <span class="badge bg-danger">Ausente</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'asistencia:editar_asistencia' asistencia.id %}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{% url 'asistencia:eliminar_asistencia' asistencia.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted">No hay registros de asistencia.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

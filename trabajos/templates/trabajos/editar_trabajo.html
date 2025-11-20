@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Editar Trabajo{% endblock %}
+{% block content %}
+<div class="content-box">
+  <h1 class="mb-4"><i class="bi bi-pencil-square"></i> Editar Trabajo</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-warning" type="submit">
+      <i class="bi bi-check2-circle"></i> Actualizar
+    </button>
+    <a href="{% url 'trabajos:listar_trabajos' %}" class="btn btn-secondary ms-2">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

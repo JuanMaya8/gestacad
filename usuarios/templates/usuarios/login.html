@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión - GestAcad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 2px 7px rgba(0,0,0,0.1);
+            width: 320px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 1.5em;
+            color: #2979ff;
+        }
+        form input[type="text"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 0.7em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        form button {
+            width: 100%;
+            padding: 0.7em;
+            background-color: #2979ff;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #0039cb;
+        }
+        .opcion {
+            margin-top: 1em;
+        }
+        .opcion a {
+            text-decoration: none;
+            color: #2979ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.username.label_tag }}<br>
+            {{ form.username }}<br>
+            {{ form.password.label_tag }}<br>
+            {{ form.password }}<br>
+            <button type="submit">Ingresar</button>
+        </form>
+        <div class="opcion">
+            ¿No tienes cuenta? <a href="{% url 'usuarios:register' %}">Regístrate aquí</a>
+        </div>
+    </div>
+</body>
+</html>

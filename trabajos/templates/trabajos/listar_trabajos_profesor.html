@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Mis Trabajos{% endblock %}
+{% block content %}
+<div class="content-box">
+  <h1>Trabajos Asignados</h1>
+  <!-- Mensajes flash del sistema -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <a href="{% url 'trabajos:crear_trabajo' %}" class="btn btn-primary mb-3">
+    <i class="bi bi-plus-circle"></i> Crear Nuevo Trabajo
+  </a>
+  <ul class="list-group">
+    {% for trabajo in trabajos %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ trabajo.titulo }}</strong>
+          <span class="badge bg-info text-dark ms-2">{{ trabajo.materia.nombre }}</span>
+          <span class="ms-2 text-muted">Fecha límite: {{ trabajo.fecha_limite|date:"d/m/Y H:i" }}</span>
+        </div>
+        <div>
+          <a href="{% url 'trabajos:editar_trabajo' trabajo.id %}" class="btn btn-warning btn-sm me-2">
+            <i class="bi bi-pencil"></i> Editar
+          </a>
+          <a href="{% url 'trabajos:eliminar_trabajo' trabajo.id %}" class="btn btn-danger btn-sm me-2">
+            <i class="bi bi-trash"></i> Eliminar
+          </a>
+          <a href="{% url 'trabajos:revisar_entregas' trabajo.id %}" class="btn btn-success btn-sm">
+            <i class="bi bi-files"></i> Entregas
+          </a>
+        </div>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-center text-muted">No tienes trabajos asignados.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

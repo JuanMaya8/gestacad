@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Eliminar Asistencia - GestAcad{% endblock %}
+{% block content %}
+<div class="content-box text-center">
+    <h1 class="welcome mb-2">Eliminar Asistencia</h1>
+    <p>¿Estás seguro que deseas eliminar la asistencia de <b>{{ asistencia.estudiante.username }}</b> en el curso <b>{{ asistencia.curso.nombre }}</b>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'asistencia:listar_asistencia' %}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

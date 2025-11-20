@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Eliminar Curso - GestAcad{% endblock %}
+{% block content %}
+<div class="content-box shadow" style="max-width:430px;margin:4em auto 3em auto;">
+    <h2 class="mb-3"><i class="bi bi-exclamation-triangle-fill text-danger"></i> Eliminar Curso</h2>
+    <p class="mb-4">¿Estás seguro de eliminar el curso <strong>{{ curso.nombre }}</strong>?</p>
+    <form method="post" class="d-flex align-items-center gap-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Sí, eliminar</button>
+        <a href="{% url 'cursos:listar_cursos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

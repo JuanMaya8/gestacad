@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Calificar Entrega{% endblock %}
+{% block content %}
+<div class="content-box">
+  <h1 class="mb-4">Calificar entrega de <strong>{{ entrega.estudiante.username }}</strong></h1>
+  <p><b>Trabajo:</b> {{ entrega.trabajo.titulo }}</p>
+  <p><b>Archivo entregado:</b> 
+    {% if entrega.archivo %} 
+      <a href="{{ entrega.archivo.url }}" target="_blank" class="btn btn-info btn-sm">
+        <i class="bi bi-file-earmark-arrow-down"></i> Descargar archivo
+      </a>
+    {% else %}
+      <span class="text-muted">No hay archivo enviado.</span>
+    {% endif %}
+  </p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-success" type="submit"><i class="bi bi-award"></i> Guardar Calificación</button>
+    <a href="{% url 'trabajos:revisar_entregas' entrega.trabajo.id %}" class="btn btn-secondary ms-2">Volver</a>
+  </form>
+</div>
+{% endblock %}

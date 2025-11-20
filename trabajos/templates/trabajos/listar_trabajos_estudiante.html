@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Mis Trabajos{% endblock %}
+{% block content %}
+<div class="content-box">
+  <h1>Trabajos Disponibles</h1>
+  <!-- Mensajes del sistema -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  <ul class="list-group">
+    {% for trabajo in trabajos %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ trabajo.titulo }}</strong>
+          <span class="badge bg-info text-dark ms-2">{{ trabajo.materia.nombre }}</span>
+          <span class="ms-2 text-muted">Fecha límite: {{ trabajo.fecha_limite|date:"d/m/Y H:i" }}</span>
+        </div>
+        <a href="{% url 'trabajos:entregar_trabajo' trabajo.id %}" class="btn btn-primary btn-sm">
+          <i class="bi bi-upload"></i> Entregar
+        </a>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-center text-muted">No hay trabajos disponibles.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

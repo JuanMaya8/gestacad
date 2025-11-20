@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Eliminar Calificación - GestAcad{% endblock %}
+{% block content %}
+<div class="content-box text-center">
+    <h1 class="welcome mb-2">Eliminar Calificación</h1>
+    <p>¿Estás seguro que deseas eliminar la calificación de <b>{{ calificacion.estudiante.username }}</b> en la materia <b>{{ calificacion.materia.nombre }}</b>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'calificaciones:listar_calificaciones' %}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
