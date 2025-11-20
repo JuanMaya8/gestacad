@@ -45,7 +45,7 @@ En Linux/Mac:
 source venv/bin/activate
 
 Instala las dependencias:
-pip install django pillow
+pip install django requeriments.tsx
 
 📂 3. Dependencias
 
